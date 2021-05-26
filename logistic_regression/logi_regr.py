@@ -11,7 +11,6 @@ def feature_scaling(x):
     """
     mean=np.mean(X,axis=0)
     std=np.std(X,axis=0)
-    
     X_norm = (X - mean)/std
     
     return X_norm , mean , std
@@ -35,7 +34,6 @@ def hypothesis(theta, x):
     and z = theta.T * X 
     """
     z = np.dot(theta.T,x) # np array [1,m]
-    # z = theta[0]*x[0,:]+ theta[1]*x[1,:] + theta[2]*x[2,:]
     s = 1/(1+np.exp(-z))
     return s
 
@@ -52,16 +50,6 @@ def compute_cost(theta, x, y, hypo_vector):
     cost function, scalar value 
     """
     m = len(y)
-    
-    ## loop implementation ##
-    #----------------------#
-    # J = 0 
-    # for i in range(len(hypo_vector)):
-    #     if hypo_vector[i] == 1:
-    #         J += 0
-    #     else :
-    #         J += (-y[i]*np.log(hypo_vector[i])) - ((1-y[i])*np.log(1-hypo_vector[i]))
-    
     ## Vectorised Implementation ##
     J = (np.sum(np.dot(-y,np.log(hypo_vector)) - np.dot((1-y),np.log(1-hypo_vector))))
     return J/m
@@ -85,12 +73,15 @@ def optimize(theta,x,y,lr,iter=50):
     m = len(y) # number of training example
     cost = []
     co = []
+    print("-"*80)
+    print("Cost Function values")
+    print("-"*80)
     while True:
         count += 1
         hypo_vector = hypothesis(theta,x)
         J = compute_cost(theta,x,y,hypo_vector)
-        # if count%10 == 0:
-        #     print(J)
+        if count%100 == 0:
+            print(J)
         cost.append(J)
         co.append(count)
         ## parameter update for next grad. desc. iteration ##
@@ -103,10 +94,11 @@ def optimize(theta,x,y,lr,iter=50):
         theta = np.array([t0,t1,t2])
         ## breaking condition for while loop ##
         if count == iter:
-            print("Gradient Descent completed at {} iteration".format(count))
             break 
     # plt.plot(co,cost)
     # plt.show()
+    print("Gradient Descent completed at {} iteration".format(count))
+    print('\n')
     return theta
 
 def classifierPredict(optimized_parameter, X):
@@ -165,21 +157,28 @@ if __name__ == "__main__":
     plt.show()
 
     ## prediction ## 
-    student_mark = np.array([50,90]).reshape(2,1)
+    student_mark_actual = np.array([90,50]).reshape(2,1)
     std = std.reshape(2,1)
     mean = mean.reshape(2,1)
-    student_mark = (student_mark - mean)/ std
+    student_mark = (student_mark_actual - mean)/ std
     student_mark = np.append(np.ones(1), student_mark)
     
     ## prediction for a single student ## 
     prob_of_being_admitted = hypothesis(optimized_parameter,student_mark)
     prediction = classifierPredict(optimized_parameter,student_mark)
-    print(prediction)
-
+    print("-"*80)
+    print("Prediction for the student with mark on subject x1 : {} and x2 : {}".format(student_mark_actual[0],student_mark_actual[1]))
+    print("-"*80)
+    print("Can the student get admission ? : {}".format(prediction))
+    print("probability of student getting admission : {}".format(prob_of_being_admitted))
     ##  another way to evaluate the quality of parameters that we found 
     ##  is to see how well  the learned model predicts our training ex. 
+    print("\n")
+    print("-"*80)
+    print("Evaluating the Quality of parameters found")
+    print("-"*80)
     p=classifierPredict(optimized_parameter,x)
     p = p.astype('uint8') # converts boolean to int with 0's and 1's
-    # print(sum(p==y))
     print("Train Accuracy:", sum(p==y),"%")
     print("Time taken : {} seconds".format(stop-start))
+    print('\n')
