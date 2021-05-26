@@ -110,6 +110,18 @@ def optimize(theta,x,y,lr,iter=50):
     return theta
 
 def classifierPredict(optimized_parameter, X):
+    """
+    args
+    ----
+    optimized_parameters - learned parameters
+    X - data set for which we need to predict if the 
+        candidate with the mark stored in X can get 
+        admission or not 
+    returns 
+    -------
+    returns a boolean value. If True --> cadidate gets 
+    admitted, if not, then cadidate did'nt get admission
+    """
 
     predictions = np.dot(optimized_parameter.T,X)
     return predictions > 0
