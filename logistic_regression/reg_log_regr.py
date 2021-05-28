@@ -4,7 +4,15 @@ import matplotlib.pyplot as plt
 
 def mapFeature(x1,x2,degree):
     """
-    take in numpy array of x1 and x2, return all polynomial terms up to the given degree
+    description
+    ------------
+    take in numpy array of x1 and x2, return all polynomial 
+    terms up to the given degree
+    Reference 
+    ---------
+    This part of code has been adapted from "Benlau93" github user
+    link : https://github.com/Benlau93/Machine-Learning-by-Andrew-Ng-in-Python
+    blog : https://towardsdatascience.com/andrew-ngs-machine-learning-course-in-python-regularized-logistic-regression-lasso-regression-721f311130fb
     """
     out = np.ones(len(x1)).reshape(len(x1),1)
     for i in range(1,degree+1):
