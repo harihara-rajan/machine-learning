@@ -133,6 +133,7 @@ if __name__ == "__main__":
     x0 = np.ones((x1.shape))
     x = np.array([x0,x1_s,x2_s])
     y = np.array((df["y"]))  # output vector 
+    print(y.shape)
     
     ## Data Visualisation ##
     pos = np.where(y==1)
