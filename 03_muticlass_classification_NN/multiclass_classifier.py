@@ -135,7 +135,8 @@ def one_vs_all(K,theta,x,y,lr,lmd,num_iter):
 
 def one_vs_all_predict(lp, X):
     """
-
+    lp - trained/learned parameters
+    X - feature matrix
     """
     predictions = X @ lp
     print(predictions.shape)
