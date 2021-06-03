@@ -77,8 +77,8 @@ def optimize(theta,x,y,lr,Lambda,num_iter):
     I = [] # iteration 
     for i in range(num_iter):
         c,g = compute_cost(x,y,theta,Lambda) # c-> cost and g-> gradient
-        if (i%100)==0:
-            print(c)
+        # if (i%100)==0:
+        #     print(c)
         J.append(c)
         I.append(i)
         theta = theta - (lr*g)
@@ -132,17 +132,28 @@ def one_vs_all(K,theta,x,y,lr,lmd,num_iter):
         plt.plot(I,J)
         plt.show()
     return learned_params
+
+def one_vs_all_predict(lp, X):
+    """
+
+    """
+    predictions = X @ lp
+    print(predictions.shape)
+    return np.argmax(predictions,axis=1)
+
     
 if __name__ == "__main__":
     mat = scipy.io.loadmat('ex3data1.mat')
     X = np.array(mat["X"])
     y = np.array(mat["y"])
     y[np.where(y==10)]=0
-    K = [0,2,3]
+    k = [0,1,2,3,4,5,6,7,8,9]
     # need to add one to the first column of X
     ones = np.ones(len(X[:,0])).reshape(len(X[:,0]),1)
     x = np.hstack((ones,X))
     m,n = x.shape
     theta = np.zeros((n,1))
-    lp = one_vs_all(K, theta, x, y, 0.01, 0.2, 300)
-    print(lp)
+    lp = one_vs_all(k, theta, x, y, 1, 0.2, 300)
+    pred = one_vs_all_predict(lp, x)
+    print(pred)
+    print("Training Set Accuracy:",sum(pred[:,np.newaxis]==y)[0]/5000*100,"%")
