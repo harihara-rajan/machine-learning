@@ -139,8 +139,7 @@ def one_vs_all_predict(lp, X):
     X - feature matrix
     """
     predictions = X @ lp
-    print(predictions.shape)
-    return np.argmax(predictions,axis=1)
+    return predictions
 
     
 if __name__ == "__main__":
@@ -155,6 +154,12 @@ if __name__ == "__main__":
     m,n = x.shape
     theta = np.zeros((n,1))
     lp = one_vs_all(k, theta, x, y, 1, 0.2, 300)
+    """
+    to visualise how the following lines of code is working,
+    see the pred matrix, and y_p. It can give a clear picture 
+    of what is happening. SEE IT IN SPYDER IDE for better visualisation
+    """
     pred = one_vs_all_predict(lp, x)
-    print(pred)
-    print("Training Set Accuracy:",sum(pred[:,np.newaxis]==y)[0]/5000*100,"%")
+    y_p = np.argmax(pred,axis=1) # iterate row wise and throws index position of max values
+    y_p = y_p.reshape(m,1)
+    print("Training Set Accuracy:",sum(y_p==y)[0]/m*100,"%")
