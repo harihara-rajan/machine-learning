@@ -2,13 +2,19 @@ import numpy as np
 import matplotlib.pyplot as plt 
 import pandas as pd
 import scipy.io
-
-
+"""
+multiclass classifier for recognising hand written digits.
+logistic regression used for this purpose. 
+5000 gray scale training images of hand written digits.
+Each image is of 20x20 pixel. 
+Each image is stored as a pixel value with the shape (400,1)
+Classifier achieved training accuracy of 91.46 %
+"""
 def display_data():
     """
     args
     ----
-    X - gray scale immage data set 
+    X - gray scale image data set 
     
     returns
     -------
@@ -90,7 +96,7 @@ def one_vs_all(K,theta,x,y,lr,lmd,num_iter):
     """
     args
     ----
-    K - 
+    K - class for which we need to train the classifier K --> {0,1,...,9}
     theta - parameter vector, np array[n,1]
     x - feature matrix, np array[m,n]
     y - output variable [m,1]
