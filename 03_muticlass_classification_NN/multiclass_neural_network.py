@@ -14,6 +14,15 @@ def sigmoid_gradient(z):
     s = (1/(1+np.exp(z)))
     return s * (1-s)
 
+def random_init(theta_1,theta_2):
+    eps_init = 0.12
+    m,n = theta_1.shape
+    x,y = theta_2.shape
+    theta_1 = np.random.rand(m,n) * 2*eps_init - eps_init
+    theta_2 = np.random.rand(x,y) * 2*eps_init - eps_init
+    theta_init = [theta_1,theta_2]
+    return theta_init
+
 def forward_pass(theta_1,theta_2,a1):
     """
     theta_1 - connects 1st i/p layer to hidden layer
@@ -39,7 +48,7 @@ def forward_pass(theta_1,theta_2,a1):
     a3 = sigmoid(z_3)
     return a3
 
-def nn_cost_function(k,x,y,theta_1,theta_2,lmd):
+def nn_cost_function(k,x,y,theta,lmd):
 
     y_p = forward_pass(theta_1,theta_2,x) # 5000,10 
     ## each column in y_p corresponds to prediction of 
@@ -72,7 +81,6 @@ if __name__ == "__main__":
     1st layer --> input layer 
     2nd layer --> hidden layer (25 units)
     3rd layer --> output layer (10 units) gives the result {0,1,..,9}
-
     """
     ## both weights and data are of dictionary type ##
     weights = loadmat("ex3weights.mat") # load data that contains learned params 
@@ -94,4 +102,6 @@ if __name__ == "__main__":
     print("Training Set Accuracy:",sum(y_p==y)[0]/m*100,"%")
     
     K = [1,2,3,4,5,6,7,8,9,10]
-    J, J_R = nn_cost_function(K,x,y,theta_1,theta_2,1)
+    J, J_R = nn_cost_function(K,x,y,theta,1)
+    theta_init = random_init(theta_1,theta_2) 
+    
